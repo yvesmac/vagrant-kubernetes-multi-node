@@ -2,6 +2,8 @@
 #
 # Common setup for all servers (Control Plane and Nodes)
 
+set -euxo pipefail
+
 KUBERNETES_VERSION="1.23.6-00"
 
 # disable swap

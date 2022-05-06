@@ -2,6 +2,8 @@
 #
 # Setup for Control Plane (Master) servers
 
+set -euxo pipefail
+
 MASTER_IP="192.168.50.10"
 NODENAME=$(hostname -s)
 POD_CIDR="192.168.0.0/16"

@@ -2,7 +2,10 @@
 #
 # Setup for Node servers
 
+set -euxo pipefail
+
 /bin/bash /vagrant/configs/join.sh -v
+
 sudo -i -u vagrant bash << EOF
 whoami
 mkdir -p /home/vagrant/.kube
