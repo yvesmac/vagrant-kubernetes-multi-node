@@ -1,5 +1,5 @@
 NUM_WORKER_NODES = 2
-IMAGE_NAME = "ubuntu/focal64"
+IMAGE_NAME = "bento/ubuntu-20.04"
 IP_NW = "192.168.50."
 IP_START = 10
 
@@ -34,8 +34,8 @@ Vagrant.configure("2") do |config|
       node.vm.hostname = "worker-node#{i}"
       node.vm.network "private_network", ip: IP_NW + "#{IP_START + i}"
       node.vm.provider "virtualbox" do |vb|
-        vb.memory = 8048
-        vb.cpus = 4
+        vb.memory = 4048
+        vb.cpus = 2
       end
       node.vm.provision "shell", path: "scripts/common.sh"
       node.vm.provision "shell", path: "scripts/node.sh"
