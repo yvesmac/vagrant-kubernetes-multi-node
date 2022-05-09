@@ -1,4 +1,4 @@
-NUM_WORKER_NODES = 3
+NUM_WORKER_NODES = 2
 IMAGE_NAME = "ubuntu/focal64"
 IP_NW = "192.168.50."
 IP_START = 10
@@ -6,18 +6,17 @@ IP_START = 10
 Vagrant.configure("2") do |config|
   config.ssh.insert_key = false
   config.vm.box_download_insecure = true
+  config.vm.box = IMAGE_NAME
+  config.vm.box_check_update = true
 
   config.vm.provision "shell", env: {"IP_NW" => IP_NW, "IP_START" => IP_START, "NUM_WORKER_NODES" => NUM_WORKER_NODES}, inline: <<-SHELL
     apt-get update -y
     echo "$IP_NW$((IP_START)) master-node" >> /etc/hosts
     for i in $(seq 1 $NUM_WORKER_NODES)
     do
-      echo "$IP_NW$((IP_START+1)) worker-node$i" >> /etc/hosts
+      echo "$IP_NW$((IP_START+i)) worker-node$i" >> /etc/hosts
     done
   SHELL
-
-  config.vm.box = IMAGE_NAME
-  config.vm.box_check_update = true
 
   config.vm.define "master" do |master|
     master.vm.hostname = "master-node"
@@ -35,8 +34,8 @@ Vagrant.configure("2") do |config|
       node.vm.hostname = "worker-node#{i}"
       node.vm.network "private_network", ip: IP_NW + "#{IP_START + i}"
       node.vm.provider "virtualbox" do |vb|
-        vb.memory = 2048
-        vb.cpus = 1
+        vb.memory = 8048
+        vb.cpus = 4
       end
       node.vm.provision "shell", path: "scripts/common.sh"
       node.vm.provision "shell", path: "scripts/node.sh"
